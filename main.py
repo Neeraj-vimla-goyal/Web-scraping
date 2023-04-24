@@ -1,5 +1,6 @@
 import requests
 import selectorlib
+import time
 
 
 URL = "http://programmer100.pythonanywhere.com/tours/"
@@ -16,5 +17,16 @@ def scrape(url):
     return source
 
 
+def extract(source):
+    extractor = selectorlib.Extractor.from_yaml_file("extract.yaml")
+    value = extractor.extract(source)["tours"]
+    return value
+
+
 if __name__ == "__main__":
-    print(scrape(URL))
+    while True:
+        scraped = scrape(URL)
+        extracted = extract(scraped)
+        print(extracted)
+        time.sleep(1)
+
